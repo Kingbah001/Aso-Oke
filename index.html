@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>ÀṢỌ — Men's Native Fashion</title>
-    <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="./style.css" />
   </head>
   <body>
     <nav>
@@ -18,6 +18,71 @@
       <a href="#cta" class="nav-cta">Book a Fitting</a>
     </nav>
 
+    <!-- GALLERY MODAL -->
+    <div id="gallery-modal" role="dialog" aria-modal="true">
+      <button class="gallery-close" onclick="closeGallery()" aria-label="Close">
+        &#x2715;
+      </button>
+
+      <div class="gallery-layout">
+        <!-- Stack -->
+        <div class="gallery-stack-area" id="g-stack">
+          <!-- cards injected by JS -->
+        </div>
+
+        <!-- Info -->
+        <div class="gallery-info">
+          <div class="gallery-counter">
+            <span class="cur" id="g-cur">01</span>
+            <span class="dv"></span>
+            <span class="tot" id="g-tot">08</span>
+          </div>
+          <h2 id="g-name">Grand Agbada</h2>
+          <div class="g-price" id="g-price">From ₦485,000</div>
+          <p class="g-desc" id="g-desc">
+            A commanding three-piece ensemble hand-woven from premium aso-oke.
+            The voluminous outer robe is embroidered with geometric motifs along
+            the neckline and hem.
+          </p>
+          <div class="g-detail-tags" id="g-tags"></div>
+          <div class="g-actions">
+            <button
+              class="g-nav-btn"
+              onclick="galleryNav(-1)"
+              aria-label="Previous"
+            >
+              <svg viewBox="0 0 24 24">
+                <polyline points="18 15 12 9 6 15" />
+              </svg>
+            </button>
+            <button class="g-nav-btn" onclick="galleryNav(1)" aria-label="Next">
+              <svg viewBox="0 0 24 24">
+                <polyline points="6 9 12 15 18 9" />
+              </svg>
+            </button>
+            <button
+              class="btn-primary"
+              style="margin: 0; padding: 0.9rem 2rem"
+              onclick="closeGallery()"
+            >
+              Book a Fitting
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Dots -->
+      <div class="gallery-dots" id="g-dots"></div>
+
+      <!-- Hint -->
+      <div class="gallery-hint">
+        <span class="hint-line"></span>
+        Scroll or drag to browse
+        <span class="hint-line"></span>
+      </div>
+    </div>
+
+    <!-- HERO SECTION -->
     <section id="hero">
       <div id="hero-canvas"></div>
       <div class="hero-text" id="hero-text">
@@ -92,15 +157,14 @@
           <p class="section-eyebrow">SS 2025 Collection</p>
           <h2 class="section-title">The <em>Ìmọ̀lẹ̀</em> Line</h2>
         </div>
-        <a href="#cta" class="btn-outline" style="margin: 0">View All Pieces</a>
+        <button onclick="openGallery()" class="btn-outline" style="margin: 0">
+          View All Pieces
+        </button>
       </div>
       <div class="collection-grid">
         <div class="product-card">
           <div class="product-image">
-            <img
-              src="./Images/Agbada 1.jpg"
-              alt="Grand Agbada"
-            />
+            <img src="./Images/Agbada 1.jpg" alt="Grand Agbada" />
           </div>
           <div class="product-overlay">
             <div class="product-name">Grand Agbada</div>
@@ -110,10 +174,7 @@
         </div>
         <div class="product-card">
           <div class="product-image">
-            <img
-              src="./Images/852728510744475049.jpg"
-              alt="Aso-Oke Senator"
-            />
+            <img src="./Images/852728510744475049.jpg" alt="Aso-Oke Senator" />
           </div>
           <div class="product-overlay">
             <div class="product-name">Aso-Oke Senator</div>
@@ -137,10 +198,7 @@
       <div class="collection-grid" style="margin-top: 1.5rem">
         <div class="product-card">
           <div class="product-image">
-            <img
-              src="./Images/641622278198044300.jpg"
-              alt="Babariga Suit"
-            />
+            <img src="./Images/641622278198044300.jpg" alt="Babariga Suit" />
           </div>
           <div class="product-overlay">
             <div class="product-name">Babariga Suit</div>
@@ -335,7 +393,6 @@
 
     <script>
       // Portrait photos of men — will show people wearing various attire
-      // Using Unsplash portrait/fashion photos focused on men
       const IMAGES = [
         "./Images/Agbada 5.jpg",
         "./Images/852728510744475049.jpg",
@@ -553,6 +610,272 @@
           card.style.zIndex = "";
           card.style.filter = "";
         });
+      });
+
+      // ═══════════════════════════════════════════════
+      // GALLERY MODAL — VERTICAL IMAGE STACK
+      // ═══════════════════════════════════════════════
+      const PIECES = [
+        {
+          name: "Grand Agbada",
+          price: "From ₦485,000",
+          tag: "New",
+          src: "./Images/Agbada 1.jpg",
+          desc: "A commanding three-piece ensemble hand-woven from premium aso-oke. The voluminous outer robe is embroidered with geometric motifs along the neckline and hem.",
+          tags: ["Aso-oke", "3 Piece", "Hand-embroidered", "Ceremonies"],
+        },
+        {
+          name: "Aso-Oke Senator",
+          price: "From ₦220,000",
+          tag: null,
+          src: "./Images/852728510744475049.jpg",
+          desc: "A refined senator suit cut from the finest aso-oke fabric. Clean silhouette, minimal embroidery — power through restraint.",
+          tags: ["Aso-oke", "Senator", "2 Piece", "Formal"],
+        },
+        {
+          name: "Embroidered Kaftan",
+          price: "From ₦160,000",
+          tag: "Bestseller",
+          src: "./Images/1018798747005372291.jpg",
+          desc: "A flowing kaftan adorned with intricate hand-stitched embroidery at the chest and cuffs. Lightweight damask fabric, perfect for warm evenings.",
+          tags: ["Damask", "Kaftan", "Embroidered", "Versatile"],
+        },
+        {
+          name: "Babariga Suit",
+          price: "From ₦310,000",
+          tag: null,
+          src: "./Images/641622278198044300.jpg",
+          desc: "The classic babariga reimagined. Wide sleeves, bold fabric, deep embroidery — a statement for weddings, chieftaincy events, and black-tie occasions.",
+          tags: ["Babariga", "Velvet", "Full Set", "Regal"],
+        },
+        {
+          name: "Ìbàdàn Blues Buba",
+          price: "From ₦98,000",
+          tag: null,
+          src: "./Images/967499932455809842.jpg",
+          desc: "Buba and sokoto in the signature Ìbàdàn indigo. Natural hand-dyed adire fabric, each piece carrying a unique pattern impossible to replicate.",
+          tags: ["Adire", "Hand-dyed", "Buba & Sokoto", "Casual"],
+        },
+        {
+          name: "Lagos Ceremony Cap",
+          price: "From ₦45,000",
+          tag: "New",
+          src: "./Images/961096376752079059.jpg",
+          desc: "A fila cap hand-crafted from layered aso-oke panels. Structured, stiff-brimmed, and embroidered with traditional knotwork.",
+          tags: ["Fila", "Aso-oke", "Accessory", "Handcrafted"],
+        },
+        {
+          name: "Northern Grand Robe",
+          price: "From ₦540,000",
+          tag: null,
+          src: "./Images/Agbada 2.jpg",
+          desc: "Inspired by the regalia of northern Nigerian royalty — heavy brocade, full-length silhouette, ornate embroidery across the chest and lower hem.",
+          tags: ["Brocade", "Royalty", "Full Length", "Custom"],
+        },
+        {
+          name: "Aso-ebi Coordinated Set",
+          price: "From ₦175,000",
+          tag: null,
+          src: "./Images/Agbada 3.jpg",
+          desc: "Coordinated aso-ebi for group occasions. Available in sets of 2–20 with matching fabric and tailored cuts for every body type.",
+          tags: ["Aso-ebi", "Group", "Custom Fabric", "Weddings"],
+        },
+      ];
+
+      const modal = document.getElementById("gallery-modal");
+      const gStack = document.getElementById("g-stack");
+      const gDots = document.getElementById("g-dots");
+      let gIndex = 0;
+      let gCardEls = [];
+      let gLastNavTime = 0;
+      const G_COOLDOWN = 380;
+
+      // Build stack cards
+      PIECES.forEach((p, i) => {
+        const card = document.createElement("div");
+        card.className = "g-card";
+        card.innerHTML = `
+    <img src="${p.src}" alt="${p.name}" loading="lazy"/>
+    <div class="g-card-overlay"></div>
+    <div class="g-card-label">
+      <div class="g-card-name">${p.name}</div>
+      <div class="g-card-price">${p.price}</div>
+    </div>
+    ${p.tag ? `<div class="g-card-tag">${p.tag}</div>` : ""}
+  `;
+        gStack.appendChild(card);
+        gCardEls.push(card);
+
+        // Dot
+        const dot = document.createElement("button");
+        dot.className = "g-dot" + (i === 0 ? " active" : "");
+        dot.setAttribute("aria-label", `Go to ${p.name}`);
+        dot.onclick = () => galleryGoTo(i);
+        gDots.appendChild(dot);
+      });
+
+      function getGCardStyle(index) {
+        const total = PIECES.length;
+        let diff = index - gIndex;
+        if (diff > total / 2) diff -= total;
+        if (diff < -total / 2) diff += total;
+
+        if (diff === 0) return { y: 0, scale: 1, opacity: 1, z: 5, rx: 0 };
+        if (diff === -1)
+          return { y: -150, scale: 0.83, opacity: 0.55, z: 4, rx: 8 };
+        if (diff === -2)
+          return { y: -260, scale: 0.7, opacity: 0.28, z: 3, rx: 14 };
+        if (diff === 1)
+          return { y: 150, scale: 0.83, opacity: 0.55, z: 4, rx: -8 };
+        if (diff === 2)
+          return { y: 260, scale: 0.7, opacity: 0.28, z: 3, rx: -14 };
+        return {
+          y: diff > 0 ? 380 : -380,
+          scale: 0.6,
+          opacity: 0,
+          z: 0,
+          rx: diff > 0 ? -20 : 20,
+        };
+      }
+
+      function isGVisible(i) {
+        const total = PIECES.length;
+        let diff = i - gIndex;
+        if (diff > total / 2) diff -= total;
+        if (diff < -total / 2) diff += total;
+        return Math.abs(diff) <= 2;
+      }
+
+      function renderGStack() {
+        gCardEls.forEach((card, i) => {
+          if (!isGVisible(i)) {
+            card.style.opacity = "0";
+            card.style.pointerEvents = "none";
+            return;
+          }
+          const s = getGCardStyle(i);
+          card.style.pointerEvents = i === gIndex ? "auto" : "none";
+          card.style.zIndex = s.z;
+          card.style.transform = `translateY(${s.y}px) scale(${s.scale}) rotateX(${s.rx}deg)`;
+          card.style.opacity = s.opacity;
+          card.style.transition =
+            "transform .5s cubic-bezier(.34,1.2,.64,1), opacity .4s ease";
+          card.style.boxShadow =
+            i === gIndex
+              ? "0 25px 60px rgba(0,0,0,.75), 0 0 0 1px rgba(226,185,90,.12)"
+              : "0 10px 30px rgba(0,0,0,.5)";
+        });
+
+        // Update dots
+        document
+          .querySelectorAll(".g-dot")
+          .forEach((d, i) => d.classList.toggle("active", i === gIndex));
+
+        // Update info panel
+        const p = PIECES[gIndex];
+        document.getElementById("g-cur").textContent = String(
+          gIndex + 1,
+        ).padStart(2, "0");
+        document.getElementById("g-tot").textContent = String(
+          PIECES.length,
+        ).padStart(2, "0");
+        document.getElementById("g-name").textContent = p.name;
+        document.getElementById("g-price").textContent = p.price;
+        document.getElementById("g-desc").textContent = p.desc;
+        const tagsEl = document.getElementById("g-tags");
+        tagsEl.innerHTML = p.tags
+          .map((t) => `<span class="g-detail-tag">${t}</span>`)
+          .join("");
+      }
+
+      function galleryGoTo(idx) {
+        gIndex = (idx + PIECES.length) % PIECES.length;
+        renderGStack();
+      }
+
+      function galleryNav(dir) {
+        const now = Date.now();
+        if (now - gLastNavTime < G_COOLDOWN) return;
+        gLastNavTime = now;
+        galleryGoTo(gIndex + dir);
+      }
+
+      function openGallery(startIndex = 0) {
+        gIndex = startIndex;
+        renderGStack();
+        modal.classList.add("open");
+        document.body.style.overflow = "hidden";
+        // Attach wheel listener
+        modal.addEventListener("wheel", handleGalleryWheel, { passive: false });
+      }
+
+      function closeGallery() {
+        modal.classList.remove("open");
+        document.body.style.overflow = "";
+        modal.removeEventListener("wheel", handleGalleryWheel);
+      }
+
+      function handleGalleryWheel(e) {
+        e.preventDefault();
+        e.stopPropagation();
+        if (Math.abs(e.deltaY) > 25) galleryNav(e.deltaY > 0 ? 1 : -1);
+      }
+
+      // Keyboard navigation
+      document.addEventListener("keydown", (e) => {
+        if (!modal.classList.contains("open")) return;
+        if (e.key === "Escape") closeGallery();
+        if (e.key === "ArrowDown" || e.key === "ArrowRight") galleryNav(1);
+        if (e.key === "ArrowUp" || e.key === "ArrowLeft") galleryNav(-1);
+      });
+
+      // Touch drag on stack
+      let gTouchStartY = 0;
+      gStack.addEventListener("touchstart", (e) => {
+        gTouchStartY = e.touches[0].clientY;
+      });
+      gStack.addEventListener(
+        "touchmove",
+        (e) => {
+          e.preventDefault();
+        },
+        { passive: false },
+      );
+      gStack.addEventListener("touchend", (e) => {
+        const diff = gTouchStartY - e.changedTouches[0].clientY;
+        if (Math.abs(diff) > 40) galleryNav(diff > 0 ? 1 : -1);
+      });
+
+      // Mouse drag on active card
+      let gDragStartY = 0,
+        gDragging = false;
+      gStack.addEventListener("mousedown", (e) => {
+        if (gCardEls[gIndex] && gCardEls[gIndex].contains(e.target)) {
+          gDragStartY = e.clientY;
+          gDragging = true;
+          gCardEls[gIndex].classList.add("dragging");
+        }
+      });
+      window.addEventListener("mousemove", (e) => {
+        if (!gDragging) return;
+        const diff = gDragStartY - e.clientY;
+        const card = gCardEls[gIndex];
+        if (card)
+          card.style.transform = `translateY(${-diff * 0.3}px) scale(1)`;
+      });
+      window.addEventListener("mouseup", (e) => {
+        if (!gDragging) return;
+        gDragging = false;
+        const diff = gDragStartY - e.clientY;
+        const card = gCardEls[gIndex];
+        if (card) card.classList.remove("dragging");
+        if (Math.abs(diff) > 50) galleryNav(diff > 0 ? 1 : -1);
+        else renderGStack();
+      });
+
+      // Click backdrop to close
+      modal.addEventListener("click", (e) => {
+        if (e.target === modal) closeGallery();
       });
     </script>
   </body>
